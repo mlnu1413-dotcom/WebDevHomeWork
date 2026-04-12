@@ -28,13 +28,7 @@ $(document).ready(function() {
     function addActivityToList(cell, activityName) {
         // Get the activity name from the first column of this row
         const activityType = cell.parent().find('td:first-child').text();
-        
-        // Get the cliff name from the table header based on column index
-        const columnIndex = cell.index();
-        const cliffName = $('thead th').eq(columnIndex).text();
-        
-        // Format as "Activity Name at Cliff Name"
-        const fullActivityName = `${activityName} at ${cliffName}`;
+        const fullActivityName = `${activityType} - ${activityName}`;
         
         // Add to array if not already present
         if (!selectedActivities.includes(fullActivityName)) {
@@ -45,7 +39,7 @@ $(document).ready(function() {
     
     // Function to remove activity from the display list
     function removeActivityFromList(activityName) {
-        // Remove the activity from the array using exact match
+        // Find and remove the activity from the array
         selectedActivities = selectedActivities.filter(activity => 
             !activity.includes(activityName)
         );
@@ -66,16 +60,7 @@ $(document).ready(function() {
             activityList.empty();
             
             selectedActivities.forEach(activity => {
-                // Split the activity string to highlight the cliff name
-                const parts = activity.split(' at ');
-                if (parts.length === 2) {
-                    const activityName = parts[0];
-                    const cliffName = parts[1];
-                    activityList.append(`<li>${activityName} at <span class="cliff-name">${cliffName}</span></li>`);
-                } else {
-                    // Fallback for any unexpected format
-                    activityList.append(`<li>${activity}</li>`);
-                }
+                activityList.append(`<li>${activity}</li>`);
             });
         }
     }
