@@ -38,10 +38,9 @@
         <header>
         </header>
         <br/>
-        <div class="table-responsive">
-        <table class="table table-striped table-hover" style="width: 100%; border-collapse: collapse;">
+        <table style="width: 100%; border-collapse: collapse;">
             <caption>Calories Comparison of Popular Burgers</caption>
-            <thead class="table-dark">
+            <thead>
                 <tr>
                     <th>Activity</th>
                     <th>West Cliff</th>
@@ -88,38 +87,22 @@
                 </tr>
             </tbody>
         </table>
-        </div>
 
-        <!-- Bootstrap Modal for Selected Activities -->
-        <div class="modal fade" id="activitiesModal" tabindex="-1" aria-labelledby="activitiesModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="activitiesModalLabel">Selected Activities</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div id="selected-activities">
+            <h3>Selected Activities:</h3>
+            <ul id="activity-list">
+            </ul>
+            
+            <div id="inquiry-section">
+                <h4>Get More Information</h4>
+                <div class="inquiry-form">
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
                     </div>
-                    <div class="modal-body">
-                        <ul id="modal-activity-list">
-                        </ul>
-                        
-                        <div id="modal-inquiry-section" style="display: none;">
-                            <h4>Get More Information</h4>
-                            <div class="inquiry-form">
-                                <div class="form-group">
-                                    <label for="modal-email">Email Address:</label>
-                                    <input type="email" id="modal-email" name="email" placeholder="Enter your email address" required>
-                                </div>
-                            </div>
-                            <div id="modal-inquiry-message" style="display: none;"></div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back to Activities</button>
-                        <button type="button" id="modal-inquiry-btn" class="btn btn-primary" style="display: none;">
-                            <i class="fas fa-paper-plane me-2"></i>Get Info
-                        </button>
-                    </div>
+                    <button type="button" id="inquiry-btn">Get Info</button>
                 </div>
+                <div id="inquiry-message" style="display: none;"></div>
             </div>
         </div>
 

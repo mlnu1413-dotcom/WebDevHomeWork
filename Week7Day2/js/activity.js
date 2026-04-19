@@ -1,10 +1,6 @@
 $(document).ready(function() {
     // Array to store selected activities
     let selectedActivities = [];
-    let activitiesModal;
-    
-    // Initialize Bootstrap modal
-    activitiesModal = new bootstrap.Modal(document.getElementById('activitiesModal'));
     
     // Add click event listeners to table cells (excluding first column and "Not Available" cells)
     $('tbody td').click(function() {
@@ -26,12 +22,6 @@ $(document).ready(function() {
             cell.addClass('selected');
             addActivityToList(cell, cellText);
         }
-        
-        // Always show modal when activities are selected
-        if (selectedActivities.length > 0) {
-            updateModalContent();
-            activitiesModal.show();
-        }
     });
     
     // Function to add activity to the display list
@@ -43,6 +33,7 @@ $(document).ready(function() {
         // Add to array if not already present
         if (!selectedActivities.includes(fullActivityName)) {
             selectedActivities.push(fullActivityName);
+            updateDisplayBox();
         }
     }
     
@@ -52,34 +43,35 @@ $(document).ready(function() {
         selectedActivities = selectedActivities.filter(activity => 
             !activity.includes(activityName)
         );
+        updateDisplayBox();
     }
     
-    // Function to update modal content
-    function updateModalContent() {
-        const modalActivityList = $('#modal-activity-list');
-        const modalInquirySection = $('#modal-inquiry-section');
-        const modalInquiryBtn = $('#modal-inquiry-btn');
+    // Function to update the display box
+    function updateDisplayBox() {
+        const displayBox = $('#selected-activities');
         
-        modalActivityList.empty();
-        
-        selectedActivities.forEach(activity => {
-            modalActivityList.append(`<li>${activity}</li>`);
-        });
-        
-        // Show inquiry section and button if activities are selected
-        if (selectedActivities.length > 0) {
-            modalInquirySection.show();
-            modalInquiryBtn.show();
+        if (selectedActivities.length === 0) {
+            // Hide display box if no activities selected
+            displayBox.hide();
         } else {
-            modalInquirySection.hide();
-            modalInquiryBtn.hide();
+            // Show display box and update content
+            displayBox.show();
+            const activityList = $('#activity-list');
+            activityList.empty();
+            
+            selectedActivities.forEach(activity => {
+                activityList.append(`<li>${activity}</li>`);
+            });
         }
     }
     
-    // Modal inquiry button functionality
-    $('#modal-inquiry-btn').click(function() {
-        const email = $('#modal-email').val().trim();
-        const messageDiv = $('#modal-inquiry-message');
+    // Initial setup - hide display box
+    $('#selected-activities').hide();
+    
+    // Inquiry button functionality
+    $('#inquiry-btn').click(function() {
+        const email = $('#email').val().trim();
+        const messageDiv = $('#inquiry-message');
         
         // Clear previous messages
         messageDiv.hide();
@@ -87,18 +79,18 @@ $(document).ready(function() {
         
         // Validate email
         if (!email) {
-            showModalMessage('Please enter your email address.', 'error');
+            showMessage('Please enter your email address.', 'error');
             return;
         }
         
         if (!isValidEmail(email)) {
-            showModalMessage('Please enter a valid email address.', 'error');
+            showMessage('Please enter a valid email address.', 'error');
             return;
         }
         
         // Check if any activities are selected
         if (selectedActivities.length === 0) {
-            showModalMessage('Please select at least one activity before sending an inquiry.', 'info');
+            showMessage('Please select at least one activity before sending an inquiry.', 'info');
             return;
         }
         
@@ -112,30 +104,11 @@ $(document).ready(function() {
         console.log('Inquiry data:', inquiryData);
         
         // Show success message
-        showModalMessage(`Thank you! Your inquiry about ${selectedActivities.length} activity(ies) has been sent to ${email}. We'll contact you soon with more information.`, 'success');
+        showMessage(`Thank you! Your inquiry about ${selectedActivities.length} activity(ies) has been sent to ${email}. We'll contact you soon with more information.`, 'success');
         
         // Clear the email field
-        $('#modal-email').val('');
-        
-        // Close modal after 3 seconds
-        setTimeout(function() {
-            activitiesModal.hide();
-            // Clear selections after modal closes
-            clearAllSelections();
-        }, 3000);
+        $('#email').val('');
     });
-    
-    // Clear all selections when modal is hidden
-    $('#activitiesModal').on('hidden.bs.modal', function () {
-        clearAllSelections();
-    });
-    
-    function clearAllSelections() {
-        selectedActivities = [];
-        $('td.selected').removeClass('selected');
-        $('#modal-email').val('');
-        $('#modal-inquiry-message').hide();
-    }
     
     // Function to validate email format
     function isValidEmail(email) {
@@ -143,11 +116,10 @@ $(document).ready(function() {
         return emailRegex.test(email);
     }
     
-    // Function to show messages in modal
-    function showModalMessage(message, type) {
-        const messageDiv = $('#modal-inquiry-message');
+    // Function to show messages
+    function showMessage(message, type) {
+        const messageDiv = $('#inquiry-message');
         messageDiv.text(message);
-        messageDiv.removeClass('success error info');
         messageDiv.addClass(type);
         messageDiv.show();
         

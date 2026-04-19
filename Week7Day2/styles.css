@@ -6,50 +6,26 @@ header {
 
 #home {
   background: no-repeat white url(../images/cliff_ocean.jpg);
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  min-height: 400px;
+  background-size: 100% 400px;
 }
 
 #home header {
   background: none;
 }
 
-#activities {
-  background: no-repeat lightgrey url(../images/runfly.jpg);
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  min-height: 400px;
-}
-
 #activities header {
-  background: none;
-}
-
-#contact {
-  background: no-repeat lightgrey url(../images/cliff_rock.jpg);
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  min-height: 400px;
+  background: no-repeat lightgrey url(../images/runfly.jpg);
+  background-size: 1500px;
 }
 
 #contact header {
-  background: none;
-}
-
-#cliffs {
-  background: no-repeat lightgrey url(../images/cliffs.png);
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  min-height: 400px;
+  background: no-repeat lightgrey url(../images/cliff_rock.jpg);
+  background-size: 1500px;
 }
 
 #cliffs header {
-  background: none;
+  background: no-repeat lightgrey url(../images/cliffs.png);
+  background-size: 1500px;
 }
 
 /* Time of Day Section */

@@ -48,61 +48,102 @@
         </p>
 
         <div class="contactinfo">
-            <div class="phone">
-                <span>Phone:</span>
-                <span>(800)GCLIFFS</span>
-            </div>
-            <div class="email">
-                <span>Email:</span>
-                <span>info@greatcliffs.com</span>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="phone">
+                        <span><i class="fas fa-phone me-2"></i>Phone:</span>
+                        <span>(800)GCLIFFS</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="email">
+                        <span><i class="fas fa-envelope me-2"></i>Email:</span>
+                        <span>info@greatcliffs.com</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <form action="/contact" method="post">
-            <fieldset>
-                <legend>Contact Form</legend>
-                <div class="textbox">
-                    <label>Name:</label>
-                    <input type="text" name="name" placeholder="John Doe">
-                    <label>Email:</label>
-                    <input type="email" name="email" placeholder="johndoe@gmail.com">
-                    <label>Phone:</label>
-                    <input type="text" name="phone" placeholder="xxx-xxx-xxxx">
-                </div>
+        <form action="/contact" method="post" class="needs-validation" novalidate>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Contact Form</h4>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="name" class="form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="John Doe" required>
+                            <div class="invalid-feedback">Please provide your name.</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="johndoe@gmail.com" required>
+                            <div class="invalid-feedback">Please provide a valid email.</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="phone" class="form-label">Phone:</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="xxx-xxx-xxxx">
+                            <div class="invalid-feedback">Please provide a phone number.</div>
+                        </div>
+                    </div>
 
-                <div class="radios">
-                    <label>How should we contact you?</label>
-                    <input type="radio" name="contact" value="email" checked>Email
-                    <input type="radio" name="contact" value="phone">Phone
-                </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <label class="form-label">How should we contact you?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="contact" id="contactEmail" value="email" checked>
+                                <label class="form-check-label" for="contactEmail">Email</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="contact" id="contactPhone" value="phone">
+                                <label class="form-check-label" for="contactPhone">Phone</label>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="selectmenu">
-                    <label>Which Cliff are you inquiring?</label>
-                    <select>
-                        <option>West Cliff</option>
-                        <option>North Cliff</option>
-                        <option>East Cliff</option>
-                        <option>South Cliff</option>
-                    </select>
-                </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label for="cliff" class="form-label">Which Cliff are you inquiring?</label>
+                            <select class="form-select" id="cliff" required>
+                                <option value="">Choose...</option>
+                                <option>West Cliff</option>
+                                <option>North Cliff</option>
+                                <option>East Cliff</option>
+                                <option>South Cliff</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a cliff.</div>
+                        </div>
+                    </div>
 
-                <div class="commentbox">
-                    <label>How did you hear about us:</label>
-                    <textarea></textarea>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <label for="comments" class="form-label">How did you hear about us:</label>
+                            <textarea class="form-control" id="comments" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Random Code -->
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label for="randomcode" class="form-label">Verification Code:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="randomcode" name="randomcode" placeholder="Enter 8 characters" maxlength="8" required>
+                                <span class="input-group-text code-display">XXXXXXXX</span>
+                            </div>
+                            <small class="form-text text-muted">Enter the 8 characters shown above</small>
+                            <div class="invalid-feedback">Please enter the verification code.</div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Inquire
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <!-- Random Code -->
-                <div class="randomcode">
-                    <label>Verification Code:</label>
-                    <input type="text" name="randomcode" placeholder="Enter 8 characters" maxlength="8">
-                    <div class="code-display">XXXXXXXX</div>
-                    <small>Enter the 8 characters shown above</small>
-                </div>
-                <div class="button">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane me-2"></i>Inquire
-                    </button>
-                </div>
-            </fieldset>
+            </div>
         </form>
     </main>
 
@@ -167,6 +208,23 @@
                 $('.hamburger i').removeClass('fa-times').addClass('fa-bars');
             }
         });
+        
+        // Bootstrap form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
     });
 </script>
 </body>
