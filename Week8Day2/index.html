@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Blog - Week8Day2</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      background: linear-gradient(180deg, #b8e6d5 0%, #7dd3b0 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .blog-title {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 32px;
+      color: #d4a017;
+      margin-bottom: 30px;
+    }
+
+    .food-image {
+      width: 100%;
+      border-radius: 8px;
+      border: 4px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      background: white;
+      padding: 40px;
+    }
+
+    .comments-section {
+      max-width: 700px;
+    }
+
+    .comments-title {
+      color: #4db8ac;
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    .comment-card {
+      border: 2px solid #d0d0d0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: white;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .profile-image {
+      width: 50px;
+      height: 50px;
+      background: #9e9e9e;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .profile-image:hover {
+      transform: scale(1.05);
+    }
+
+    .comment-meta {
+      flex: 1;
+    }
+
+    .author-name {
+      font-weight: bold;
+      color: #333;
+      margin-right: 10px;
+    }
+
+    .comment-date {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .reply-link {
+      color: #666;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+      margin-left: 10px;
+    }
+
+    .comment-text {
+      color: #333;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* Modal overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #2c2c2c;
+      color: white;
+      border-radius: 8px;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: white;
+      color: #333;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .close-btn:hover {
+      background: #e0e0e0;
+    }
+
+    .modal-author-name {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .modal-foodie-level {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .modal-bio-label {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .modal-bio {
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity 0.3s ease;
+    }
+
+    .fade-enter-from, .fade-leave-to {
+      opacity: 0;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        min-height: auto;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h1 class="blog-title">Food Blog</h1>
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop" 
+             alt="Food" 
+             class="food-image">
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="comments-section">
+          <h2 class="comments-title">Comments</h2>
+
+          <!-- Comment cards -->
+          <div v-for="author in authors" :key="author.name" class="comment-card">
+            <div class="comment-header">
+              <img 
+                :src="profileImage" 
+                :alt="author.name" 
+                class="profile-image"
+                @click="showAuthorInfo(author)"
+              >
+              <div class="comment-meta">
+                <div>
+                  <span class="author-name">{{ author.name }}</span>
+                  <span class="comment-date">— {{ author.date }}</span>
+                  <a href="#" class="reply-link">REPLY</a>
+                </div>
+              </div>
+            </div>
+            <div class="comment-text">{{ author.comment }}</div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Floating author info modal -->
+    <transition name="fade">
+      <div v-if="selectedAuthor" class="modal-overlay" @click="closeModal">
+        <div class="modal-content" @click.stop>
+          <button class="close-btn" @click="closeModal">Close</button>
+          <div class="modal-author-name">{{ selectedAuthor.name }}</div>
+          <div class="modal-foodie-level">Foodie Level: {{ selectedAuthor.foodieLevel }}</div>
+          <div class="modal-bio-label">Bio:</div>
+          <div class="modal-bio">{{ selectedAuthor.bio }}</div>
+        </div>
+      </div>
+    </transition>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          profileImage: 'profile.png',
+          selectedAuthor: null,
+          authors: [
+            {
+              name: 'Brianna',
+              date: 'February 18, 2021 @ 3:30 pm',
+              foodieLevel: 'Novice',
+              bio: 'Food enthusiast. Love to cook and experiment. Into only organic, fat free, sugar free stuffs!',
+              comment: 'Was amazing! My Walmart didn\'t have coriander in stock and didn\'t have ground cumin. I used serrano instead of jalapeño. It was just like my favorite tortilla soup from BJs. I am sending this recipe to my family. I want everyone to try it!'
+            },
+            {
+              name: 'LINH',
+              date: 'February 18, 2021 @ 9:48 pm',
+              foodieLevel: 'Newcomer',
+              bio: 'Love food! Grew up with meat and potatoes. Recently venture outside my comfort zone. Loving everything I have been eating so far. Thai is my favorite at this time.',
+              comment: 'I just made this soup and I have to say I didn\'t have corn at home but still turned out very good. It\'s a winner in my house. My husband since my dad has gout he can\'t eat beef, this was perfect for him. Thanks you Lisa!'
+            },
+            {
+              name: 'CATHERINE LEONARDO',
+              date: 'February 18, 2021 @ 2:58 pm',
+              foodieLevel: 'Mentor',
+              bio: 'I have to say I never was the adventurous type until 2 years ago. My boyfriend, who is of Japanese background, exposed me to other cultural food and I have never look back since!',
+              comment: 'I LOVE this White Chicken Chili. You are right, it is delicious—delicious with toasted bread. Refreshingly different from the red chili I have made in the past. I made it exactly as written and I loved the lime juice and cilantro. Instead of shredding the chicken, I chopped it into small pieces. It freezes very well. Will be an all-time favorite, for sure.'
+            },
+            {
+              name: 'KALI',
+              date: 'February 13, 2021 @ 11:31 am',
+              foodieLevel: 'Novice',
+              bio: 'Food is my passion. So is adventure and trying new things. I have to admit I\'m a food whore! Invite me over for dinner and I\'ll be there!',
+              comment: 'This recipe is dynamite! My partner usually won\'t eat beans but he finished the whole pot (darn was hoping to have some for leftovers haha). This is crowd-pleaser that I am going to add to my regular recipe rotation. Thanks so much, Lisa!'
+            }
+          ]
+        }
+      },
+      methods: {
+        showAuthorInfo(author) {
+          this.selectedAuthor = author;
+        },
+        closeModal() {
+          this.selectedAuthor = null;
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
