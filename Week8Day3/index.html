@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Blog - Week8Day3</title>
+  
+  <!-- Bootstrap 4 CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Vue 3 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Navigation Component -->
+    <nav-menu></nav-menu>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <aside class="col-md-2 sidebar">
+          <h1 class="blog-title">Food Blog</h1>
+          <img :src="foodImage" alt="White Chicken Chili" class="food-image">
+        </aside>
+
+        <!-- Main Content -->
+        <main class="col-md-10 main-content">
+          <div class="comments-section">
+            <h2 class="comments-title">Comments</h2>
+
+            <!-- Comment cards -->
+            <div v-for="author in authors" :key="author.name" class="comment-card">
+              <div class="comment-header">
+                <img 
+                  :src="profileImage" 
+                  :alt="author.name" 
+                  class="profile-image"
+                  @click="showAuthorInfo(author)"
+                >
+                <div class="comment-meta">
+                  <div>
+                    <span class="author-name">{{ author.name }}</span>
+                    <span class="comment-date">— {{ author.date }}</span>
+                    <a href="#" class="reply-link">REPLY</a>
+                  </div>
+                </div>
+              </div>
+              <div class="comment-text">{{ author.comment }}</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Floating author info modal -->
+    <transition name="fade">
+      <div v-if="selectedAuthor" class="modal-overlay" @click="closeModal">
+        <div class="modal-content" @click.stop>
+          <button class="close-btn" @click="closeModal">Close</button>
+          <div class="modal-author-name">{{ selectedAuthor.name }}</div>
+          <div class="modal-foodie-level">Foodie Level: {{ selectedAuthor.foodieLevel }}</div>
+          <div class="modal-bio-label">Bio:</div>
+          <div class="modal-bio">{{ selectedAuthor.bio }}</div>
+        </div>
+      </div>
+    </transition>
+  </div>
+
+  <!-- Bootstrap 4 JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <!-- External Vue App -->
+  <script src="app.js"></script>
+</body>
+</html>
